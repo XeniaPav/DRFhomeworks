@@ -2,6 +2,7 @@ from django.db import models
 
 NULLABLE = {"blank": True, "null": True}
 
+
 class Course(models.Model):
     """Модель курса"""
 
@@ -27,7 +28,7 @@ class Course(models.Model):
 
 
 class Lesson(models.Model):
-    """    Модель урока    """
+    """Модель урока"""
 
     title = models.CharField(
         max_length=50, verbose_name="Название", help_text="Введите название урока"
