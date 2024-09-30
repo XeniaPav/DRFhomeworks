@@ -4,11 +4,12 @@ from rest_framework.generics import ListAPIView
 from rest_framework.viewsets import ModelViewSet
 
 from users.models import User, Payment
-from users.serializers import PaymentSerializer
+from users.serializers import PaymentSerializer, UserSerializer
 
 
 class UserViewSet(ModelViewSet):
     """вьюсет для модели пользователя"""
+    serializer_class = UserSerializer
     queryset = User.objects.all()
 
 class PaymentListAPIView(ListAPIView):

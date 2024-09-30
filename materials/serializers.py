@@ -14,11 +14,16 @@ class CourseSerializer(serializers.ModelSerializer):
         model = Course
         fields = "__all__"
 
-    @staticmethod
-    def get_lessons_count(obj):
+    def get_lessons_count(self, obj):
         """возвращает lessons_count - количество уроков в курсе"""
-        return Lesson.objects.filter(course=obj.pk).count()
+        if obj.lesson_set.all().count():
+            return obj.lesson_set.all().count()
+        else:
+            return 0
 
+    def get_lessons(self, course):
+        """возвращает lessons - все уроки в курсе"""
+        return [lesson.name for lesson in Lesson.objects.filter(course=course)]
 
 class LessonSerializer(serializers.ModelSerializer):
     """Сериалайзер для урока"""
@@ -26,7 +31,3 @@ class LessonSerializer(serializers.ModelSerializer):
     class Meta:
         model = Lesson
         fields = "__all__"
-
-    def get_lessons(obj):
-        """возвращает lessons - все уроки в курсе"""
-        return [lesson.title for lesson in Lesson.objects.filter(course=obj.pk)]

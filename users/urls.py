@@ -7,7 +7,7 @@ from rest_framework.routers import SimpleRouter
 app_name = UsersConfig.name
 
 router = SimpleRouter()
-router.register("users", UserViewSet)
+router.register("", UserViewSet)
 
 
 urlpatterns = [
