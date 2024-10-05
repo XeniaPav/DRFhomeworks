@@ -14,4 +14,5 @@ class UserSerializer(ModelSerializer):
     """Сериалайзер для пользователей"""
     class Meta:
         model = User
-        fields = ("id", "first_name", "last_name", "email", "is_active", "password",)
+        fields = "__all__"
+
