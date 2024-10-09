@@ -1,7 +1,9 @@
 from rest_framework import serializers
 from rest_framework.fields import SerializerMethodField
+from rest_framework.serializers import ModelSerializer
 
-from materials.models import Course, Lesson
+from materials.models import Course, Lesson, Subscription
+from materials.validators import UrlValidator
 
 
 class LessonSerializer(serializers.ModelSerializer):
@@ -10,6 +12,7 @@ class LessonSerializer(serializers.ModelSerializer):
     class Meta:
         model = Lesson
         fields = "__all__"
+        validators = [UrlValidator(field="url")]
 
 
 class CourseSerializer(serializers.ModelSerializer):
@@ -29,6 +32,10 @@ class CourseSerializer(serializers.ModelSerializer):
         else:
             return 0
 
-    # def get_lessons(self, course):
-    #     """возвращает lessons - все уроки в курсе"""
-    #     return [lesson.title for lesson in Lesson.objects.filter(course=course)]
+
+class SubscriptionSerializer(ModelSerializer):
+    """Сериалайзер для подписок"""
+
+    class Meta:
+        model = Subscription
+        fields = "__all__"
