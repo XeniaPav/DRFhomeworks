@@ -59,6 +59,8 @@ class Payment(models.Model):
         Lesson, on_delete=models.CASCADE, verbose_name="Оплаченный урок", **NULLABLE
     )
     price = models.PositiveIntegerField(verbose_name="Оплаченная сумма")
+    session_id = models.CharField(max_length=255, verbose_name="id сессии", **NULLABLE)
+    link = models.URLField(max_length=400, verbose_name="ссылка на оплату", **NULLABLE)
     CASH = "Наличные"
     TRANSFER = "Перевод"
     methods = [
