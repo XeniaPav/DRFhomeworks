@@ -11,6 +11,7 @@ from materials.serializers import (
     SubscriptionSerializer,
 )
 from users.permissions import IsModer, IsOwner
+from materials.tasks import send_email
 
 
 class CourseViewSet(viewsets.ModelViewSet):
@@ -19,11 +20,14 @@ class CourseViewSet(viewsets.ModelViewSet):
     pagination_class = CustomPagination
 
     def perform_create(self, serializer):
+        """При создании курса присваивать его создавшему юзеру"""
+
         course = serializer.save()
         course.owner = self.request.user
         course.save()
 
     def get_permissions(self):
+        """Проверка прав доступа модератора"""
         if self.action == "create":
             self.permission_classes = (~IsModer,)
         elif self.action in ["update", "retrieve"]:
@@ -31,6 +35,12 @@ class CourseViewSet(viewsets.ModelViewSet):
         elif self.action == "destroy":
             self.permission_classes = (~IsModer | IsOwner,)
         return super().get_permissions()
+
+    def update(self, request, pk):
+        """Вьюсет обновления курсов с отправкой письма для подписчиков"""
+        course = get_object_or_404(Course, pk=pk)
+        send_email.delay(course_id=course.id)
+        return super().update(request)
 
 
 class LessonCreateAPIView(generics.CreateAPIView):

@@ -26,6 +26,7 @@ class Course(models.Model):
         **NULLABLE,
         help_text="Укажите владельца курса",
     )
+    last_update = models.DateTimeField(verbose_name="Последнее обновление", **NULLABLE)
 
     def __str__(self):
         return f"{self.title}"
